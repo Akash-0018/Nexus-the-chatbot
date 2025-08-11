@@ -1,0 +1,63 @@
+.App {
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* CSS Variables for Theme */
+:root {
+  /* Light Theme */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --bg-chat: #ffffff;
+  --bg-sidebar: #f8f9fa;
+  --bg-input: #ffffff;
+  --bg-user-message: #007bff;
+  --bg-bot-message: #f1f3f4;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-user: #ffffff;
+  --text-bot: #212529;
+  --border-color: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --accent: #007bff;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #404040;
+  --bg-chat: #1a1a1a;
+  --bg-sidebar: #2d2d2d;
+  --bg-input: #2d2d2d;
+  --bg-user-message: #007bff;
+  --bg-bot-message: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-user: #ffffff;
+  --text-bot: #ffffff;
+  --border-color: #404040;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --accent: #4dabf7;
+}
+
+.study-buddy-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.brand-icon {
+  font-size: 1.5em;
+  margin-right: 0.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
