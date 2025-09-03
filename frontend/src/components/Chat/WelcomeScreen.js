@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WelcomeScreen = ({ theme, onSuggestionClick }) => {
+const WelcomeScreen = ({ theme, onSuggestionClick, userName }) => {
   const suggestions = [
     {
       icon: '💻',
@@ -53,9 +53,9 @@ const WelcomeScreen = ({ theme, onSuggestionClick }) => {
       <div className="welcome-content">
         <div className="welcome-hero">
           <div className="welcome-icon">🔮</div>
-          <h1 className="welcome-title">Welcome to Nexus!</h1>
+          <h1 className="welcome-title">Welcome {userName}!</h1>
           <p className="welcome-subtitle">
-            Your advanced AI companion is ready to help you excel in your studies and research
+            I'm Nexus, your advanced AI companion ready to help you excel in your studies and research
           </p>
         </div>
 

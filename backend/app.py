@@ -3,12 +3,17 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from datetime import datetime
+from models.chat import db
+from flask_migrate import Migrate
 
 # Load environment variables FIRST
 load_dotenv()
 
-def create_app():
+def create_app(config_object='config.Config'):
     app = Flask(__name__)
+    
+    # Load configuration
+    app.config.from_object(config_object)
     
     # Configure file uploads
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
@@ -16,6 +21,10 @@ def create_app():
     
     # Create upload directory
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    
+    # Initialize extensions
+    db.init_app(app)
+    migrate = Migrate(app, db)
     
     # **FIXED CORS CONFIGURATION WITH CREDENTIALS**
     CORS(app, 
@@ -73,8 +82,24 @@ def create_app():
             'credentials_supported': True,
             'timestamp': datetime.now().isoformat()
         })
+
+    # Frontend redirect routes
+    @app.route('/frontend_auth_success')
+    def frontend_auth_success():
+        return redirect('http://localhost:3000/auth-success')
+
+    @app.route('/frontend_auth_error')
+    def frontend_auth_error():
+        return redirect('http://localhost:3000/auth-error')
+
+    @app.route('/frontend_logout')
+    def frontend_logout():
+        return redirect('http://localhost:3000/logout')
     
     return app
+
+# Create app instance for migrations and running
+app = create_app()
 
 if __name__ == '__main__':
     # Verify API key is loaded
@@ -83,7 +108,6 @@ if __name__ == '__main__':
         print("[ERROR] GEMINI_API_KEY not found! Check your .env file")
         exit(1)
     
-    app = create_app()
     if app is None:
         print("[ERROR] Failed to create app")
         exit(1)

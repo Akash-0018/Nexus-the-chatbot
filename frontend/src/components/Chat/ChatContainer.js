@@ -10,29 +10,7 @@ const ChatContainer = () => {
   const [theme, setTheme] = useState('light');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [chatHistory, setChatHistory] = useState([
-    {
-      id: 'demo-1',
-      title: 'Python Programming Help',
-      preview: 'Help me understand Python loops, functions, and data structures',
-      timestamp: new Date(Date.now() - 3600000),
-      messages: []
-    },
-    {
-      id: 'demo-2',
-      title: 'Mathematics Problem',
-      preview: 'Solve quadratic equations and explain step by step process',
-      timestamp: new Date(Date.now() - 7200000),
-      messages: []
-    },
-    {
-      id: 'demo-3',
-      title: 'File Analysis',
-      preview: 'Analyze my uploaded PDF document about machine learning',
-      timestamp: new Date(Date.now() - 10800000),
-      messages: []
-    }
-  ]);
+  const [chatHistory, setChatHistory] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,9 +38,28 @@ const ChatContainer = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Fetch chat history when component mounts
+  useEffect(() => {
+    fetchChatHistory();
+  }, []);
+
+  const fetchChatHistory = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/history', {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      if (data.success) {
+        setChatHistory(data.chat_history);
+      }
+    } catch (error) {
+      console.error('Failed to fetch chat history:', error);
+    }
+  };
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    document.title = 'Nexus - AI Academic Companion'; // Update page title
+    document.title = 'Nexus - AI Academic Companion';
   }, [theme]);
 
   useEffect(() => {
@@ -234,6 +231,8 @@ const ChatContainer = () => {
             )}
           </div>
 
+          {/* User info section removed */}
+
           <button className="new-chat-btn" onClick={handleNewChat}>
             <span className="icon">➕</span>
             {!sidebarCollapsed && <span>New Chat</span>}
@@ -355,9 +354,7 @@ const ChatContainer = () => {
             </div>
             
             <div className="header-right">
-              <span className="chat-counter">
-                {chatHistory.length} conversations
-              </span>
+              {/* Desktop user info removed */}
               <button 
                 className="theme-toggle desktop"
                 onClick={toggleTheme}

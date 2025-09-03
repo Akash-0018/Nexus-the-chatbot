@@ -17,3 +17,5 @@ pytesseract
 opencv-python
 numpy
 xlrd
+flask-sqlalchemy
+flask-migrate
