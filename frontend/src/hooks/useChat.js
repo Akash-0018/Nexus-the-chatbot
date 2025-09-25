@@ -9,8 +9,10 @@ const useChat = () => {
   const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
-    initializeChat();
-  }, []);
+    if (!sessionId) {
+      initializeChat();
+    }
+  }, [sessionId]);
 
   const initializeChat = async () => {
     try {

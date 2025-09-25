@@ -81,6 +81,12 @@ class ApiService {
       body: JSON.stringify({ session_id: sessionId }),
     });
   }
+
+  async getChatHistory() {
+    return this.request('/history', {
+      method: 'GET'
+    });
+  }
 }
 
 export default new ApiService();

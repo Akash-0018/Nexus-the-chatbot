@@ -3,6 +3,7 @@ import MessageList from './MessageList';
 import InputArea from './InputArea';
 import WelcomeScreen from './WelcomeScreen';
 import useChat from '../../hooks/useChat';
+import ApiService from '../../Services/api';
 import '../../styles/chat-interface.css';
 
 const ChatContainer = () => {
@@ -45,12 +46,18 @@ const ChatContainer = () => {
 
   const fetchChatHistory = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/history', {
-        credentials: 'include'
-      });
-      const data = await response.json();
+      const data = await ApiService.getChatHistory();
       if (data.success) {
-        setChatHistory(data.chat_history);
+        // Convert timestamps to Date objects when loading chat history
+        const historyWithDates = data.chat_history.map(chat => ({
+          ...chat,
+          timestamp: new Date(chat.timestamp),
+          messages: chat.messages.map(msg => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp)
+          }))
+        }));
+        setChatHistory(historyWithDates);
       }
     } catch (error) {
       console.error('Failed to fetch chat history:', error);
@@ -283,7 +290,7 @@ const ChatContainer = () => {
                           <>
                             <div className="chat-preview">{chat.preview}</div>
                             <div className="chat-time">
-                              {chat.timestamp.toLocaleTimeString([], {
+                              {(typeof chat.timestamp === 'string' ? new Date(chat.timestamp) : chat.timestamp).toLocaleTimeString([], {
                                 hour: '2-digit',
                                 minute: '2-digit'
                               })}
